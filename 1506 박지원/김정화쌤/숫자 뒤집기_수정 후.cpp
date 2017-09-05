@@ -1,20 +1,28 @@
-//combinations (방법 2)
+//숫자 뒤집기
+//수정 전
 
 #include <stdio.h>
 #include <time.h> //cplusplus.com
 
-int f(int n, int k){
-    if(n==k) return 1;
-    if(k==1) return n;
-    return (double)(n-k+1)/k*f(n,k-1);
+bool first=1;
+
+void solve(int n){
+    if(n==0) return;
+    if(first && (n%10)==0)
+        solve(n/10);
+    else{
+        printf("%d", n%10), first=0;
+        solve(n/10);
+    }
 }
+
 int main(){
-    int n,k ;
-    scanf("%d %d",&n, &k);
+    int n;
+    scanf("%d",&n);
     
     time_t s=clock();    //실행 시간 측정 시작
     
-    printf("%d\n",f(n,k));
+    solve(n);
     
     time_t e=clock();
     printf("\n%f seconds\n",(float)(e-s)/CLOCKS_PER_SEC); //실행 시간 측정 완료

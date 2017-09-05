@@ -1,4 +1,4 @@
-//combinations (방법 2)
+//combinations (방법 1)
 
 #include <stdio.h>
 #include <time.h> //cplusplus.com
@@ -6,7 +6,7 @@
 int f(int n, int k){
     if(n==k) return 1;
     if(k==1) return n;
-    return (double)(n-k+1)/k*f(n,k-1);
+    return f(n-1,k-1) + f(n-1,k);
 }
 int main(){
     int n,k ;
