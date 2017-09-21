@@ -1,55 +1,29 @@
-//upper bound ( binary )
+//영역 나누기 (파일입출력)
 
-#include <stdio.h>
-#include <algorithm>
-#include <time.h> //cplusplus.com
+#include <cstdio>
 
-int a[1000001];
+int P[1<<7][1<<7], n;
 
-int length, k[10001], l[10001], n;
-
-//upper bound
-int ub(int s, int e, int k){ //시작값, 종단값, 탐색값
-    while(s<e){
-        int m=(s+e)/2;
-        if(a[m]>k) e=m;
-        else s=m+1;
-    }
-    return e+1;
+bool isOne(int a, int b, int s, int v){
+    for(int i=a; i<a+s; i++)
+        for(int j=b; j<b+s; j++)
+            if(P[i][j]!=v) return 0;
+    return 1;
 }
 
-//lower bound
-int lb(int s, int e, int k){ //시작값, 종단값, 탐색값
-    while(s<e){
-        int m=(s+e)/2;
-        if(a[m]>=k) e=m;
-        else s=m+1;
-    }
-    return e+1;
+int f(int a, int b, int s, int v){
+    if(s==1) return P[a][b]==v;
+    if(isOne(a,b,s,v)) return 1;
+    return f(a,b,s/2,v)+f(a+s/2,b,s/2,v)+f(a,b+s/2,s/2,v)+f(a+s/2,b+s/2,s/2,v);
 }
-
 
 int main(){
-    scanf("%d",&length);
-    for(int j=0; j<length; j++){
-        scanf("%d", a+j);
-    }
+    FILE *in = fopen("input.txt","r");
+    FILE *out = fopen("output.txt","w");
     
-    scanf("%d", &n);
-    
-    for(int i=0; i<n; i++){
-        scanf("%d %d", k+i,l+i);
-    }
-    
-    time_t s=clock();    //실행 시간 측정 시작
-    
-    for(int i=0; i<n; i++){
-        printf("%d %d\n",ub(0,n,l[i]),lb(0,n,k[i]));
-        printf("%d\n",ub(0,n,l[i])-lb(0,n,k[i]));
-    }
-    
-    time_t e=clock();
-    printf("\n%f seconds\n",(float)(e-s)/CLOCKS_PER_SEC); //실행 시간 측정 완료
-    
-    return 0;
+    fscanf(in,"%d",&n);
+    for(int i=0; i<n; i++)
+        for(int j=0; j<n; j++)
+            fscanf(in, "%d", &P[i][j]);
+    fprintf(out, "%d\n%d\n", f(0,0,n,0), f(0,0,n,1));
 }
