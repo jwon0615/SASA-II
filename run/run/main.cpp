@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #include <stdio.h>
 
 int n, k, a[10000], b[10000], arr[500000];
@@ -32,4 +33,35 @@ int main(){
     //출력
     for(int i=0; i<k; i++) //k줄에 걸쳐 입력받은 두 수 사이(두 수 포함)에 있는 숫자의 갯수
        printf("%d\n", ub(0,n,b[i])-lb(0,n,a[i]));
+=======
+//분할 수 문제 (partitioned)
+
+#include <stdio.h>
+
+int a[30], cnt;
+
+int min(int a, int b){
+    return a>b ? b:a;
+}
+
+void solve(int n, int k){
+    if(n==0){
+        for(int i=0; i<cnt; i++)
+            printf("%d ", a[i]);
+        puts("");
+        return;
+    }
+    for(int i=min(n,k); i>=1; i--){
+        a[cnt++]=i;
+        solve(n-i, i);
+        cnt--;
+    }
+}
+
+int main(){
+    int n;
+    scanf("%d", &n);
+    solve(n,n);
+    return 0;
+>>>>>>> 47de736c7700d75e3daab346eb6686c74f84baec
 }
