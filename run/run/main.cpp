@@ -1,49 +1,43 @@
-//숫자 뒤집기(L)
-#include <cstdio>
-#include <math.h>
-#include <time.h>
+#include <stdio.h>
 
-int DT[100001];
+int n, m;
+int map[11][11], visit[11]; // 인접 행렬과 방문 여부를 나타내는 배열
 
-int f1(int n){
-    if(!DT[n]){
-        if(n<10)
-            DT[n]=n;
-        else
-        DT[n]=f1(n/10)+(n%10)*powf(10.0,(int)log10((double)n));
-     }
-    return DT[n];
+void DFS(int s, int e)
+{
+    if(s==e) printf("%d", e);
+    int i;
+    
+    visit[s] = 1; // 정점 v를 방문했다고 표시
+    for (i = 1; i <= n; i++)
+    {
+        // 정점 v와 정점 i가 연결되었고, 정점 i를 방문하지 않았다면
+        if (map[s][i] == 1&&!visit[i])
+        {
+            if(!visit[i]){
+                printf("%d %d\n", s, i);
+                DFS(i, e);
+            }
+            else
+                DFS(i, e);
+        }
+    }
 }
 
-int f2(int n){
-    if(n<10)
-        return n;
+int main()
+{
+    int start, end;
+    int v1, v2;
     
-    return f2(n/10)+(n%10)*powf(10.0,(int)log10((double)n));
-}
-
-int main(){
-    int n;
-        while(n>0){
-
-            scanf("%d", &n);
+    scanf("%d %d", &n, &m);
     
-            time_t s = clock();
-    
-            printf("%d\n", f1(n));
-    
-            time_t e=clock();
-            printf("상향식 : ");
-            printf("%fseconds\n", (float)(e-s)/CLOCKS_PER_SEC);
-    
-            time_t s2 = clock();
-           
-            f2(n);
-            time_t e2=clock();
-            printf("하향식 : ");
-            printf("%fseconds\n\n", (float)(e2-s2)/CLOCKS_PER_SEC);
+    for(int i=0; i<m; i++){
+        scanf("%d %d", &v1, &v2);
+        map[v1][v2]=map[v2][v1]=1;
     }
     
-    return 0;
+    scanf("%d %d", &start, &end);
+    DFS(start, end); // DFS 시작!
     
+    return 0;
 }
